@@ -25,3 +25,4 @@ if __name__ == '__main__':
 #	solve(puzzle_moderate_4)
 #	solve(puzzle_hard_1)
 #	solve(puzzle_hard_2)
+#	solve(puzzle_hard_3)
