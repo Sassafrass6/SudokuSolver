@@ -23,6 +23,9 @@ def solve ( puz ):
 
 		# Save current state
 		prevPuz = np.copy(puz)
+		
+		# Matrix to remember which numbers can occupy which spaces
+		memMat = [[[] for _ in np.arange(grid_dim)] for _ in np.arange(grid_dim)]
 
 		if verbose:
 			print('\nITERATION # %d'%iterCount)
@@ -40,12 +43,18 @@ def solve ( puz ):
 
 				if verbose:
 					print('Inner block Method')
-				inner_block_method(puz, n)
+				inner_block_method(puz, n, memMat)
 
 				if verbose:
 					print('Row Method')
 				line_method(puz, True, n)
 				line_method(puz, False, n)
+
+		for i in np.arange(grid_dim):
+			for j in np.arange(grid_dim):
+				if len(memMat[i][j]) == 1:
+					puz[i][j] = memMat[i][j][0]
+					continue
 
 		# If the puzzle didnt change in this iteration break loop and verify puzzle
 		# Otherwise update the iteration count and continue
@@ -64,7 +73,7 @@ def solve ( puz ):
 
 	# Verify that the Sudoku is correct
 	if not verify_puzzle(puz):
-		print 'Puzzle Inconsistent'
+		print 'Puzzle Inconsistent\n\n'
 	if numsComplete.all():
 		print 'Puzzle Solved!'
 		print '--------------\n\n'

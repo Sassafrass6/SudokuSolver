@@ -55,7 +55,7 @@ def find_completed_numbers ( puz, nComplete ):
 
 	# Find completed numbers
 	for i in np.arange(grid_dim):
-		if numCnt[i] == 9:
+		if numCnt[i] == grid_dim:
 			nComplete[i] = True
 
 	return emptyCnt
