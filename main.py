@@ -19,7 +19,9 @@ from SolveSudoku import solve
 # Solves currently solvable Sudoku puzzles
 if __name__ == '__main__':
 	solve(puzzle_easy_1)
-#	solve(puzzle_moderate_1)
+	solve(puzzle_moderate_1)
 	solve(puzzle_moderate_2)
 	solve(puzzle_moderate_3)
+#	solve(puzzle_moderate_4)
 #	solve(puzzle_hard_1)
+#	solve(puzzle_hard_2)

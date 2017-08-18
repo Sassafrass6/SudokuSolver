@@ -37,13 +37,6 @@ def solve ( puz ):
 			if not numsComplete[n-1]:
 				if verbose:
 					print('\nStarting n=%d'%n)
-				
-					print('Outer block Method')
-				outer_block_method(puz, True, n)
-				outer_block_method(puz, False, n)
-
-#				if not (prevPuz == puz).all():
-#				continue
 
 				if verbose:
 					print('Inner block Method')
