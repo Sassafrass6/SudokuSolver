@@ -3,6 +3,41 @@ from Puzzles import *
 from SolveMethods import *
 from AuxilaryMethods import *
 
+# Attempt to complete blocks, rows and coloumns that only have one free cell
+# Only blocks are implemented thus far.
+def complete_brc ( puz ):
+
+	print('complete_brc')
+	madeReplacement = False
+	npos = np.empty((2), dtype=bool)
+	hasn = np.zeros((grid_dim), dtype=bool)
+	#	Complete Blocks
+	for i in np.arange(0, grid_dim, block_dim):
+		for j in np.arange(0, grid_dim, block_dim):
+			ncnt = 0
+			nvar = np.zeros((grid_dim), dtype=bool)
+			for ik in np.arange(block_dim):
+				for jk in np.arange(block_dim):
+					x = i + ik
+					y = j + jk
+
+					if puz[x][y] == 0:
+						ncnt += 1
+						npos = np.array([x, y])
+					else:
+						hasn[puz[x][y]-1] = True
+
+			if ncnt == 1:
+				for tn in np.arange(grid_dim):
+					if not hasn[tn]:
+						print 
+						puz[npos[0], npos[1]] = tn+1
+						madeReplacement = True
+						break
+
+		return madeReplacement
+
+
 # Attempts to solve Sudoku puzzle
 def solve ( puz ):
 	
@@ -42,12 +77,15 @@ def solve ( puz ):
 				outer_block_method(puz, True, n)
 				outer_block_method(puz, False, n)
 
-#				if not (prevPuz == puz).all():
-#				continue
+				if not (prevPuz == puz).all():
+					continue
 
 				if verbose:
 					print('Inner block Method')
 				inner_block_method(puz, n)
+
+				if not (prevPuz == puz).all():
+ 					continue
 
 				if verbose:
 					print('Row Method')
@@ -57,6 +95,8 @@ def solve ( puz ):
 		# If the puzzle didnt change in this iteration break loop and verify puzzle
 		# Otherwise update the iteration count and continue
 		if (prevPuz == puz).all():
+#			if complete_brc(puz):
+#				continue
 			prevPuz = None
 			break
 		else:
