@@ -50,20 +50,31 @@ def solve ( puz ):
 				line_method(puz, True, n)
 				line_method(puz, False, n)
 
-		for i in np.arange(grid_dim):
-			for j in np.arange(grid_dim):
-				if len(memMat[i][j]) == 1:
-					puz[i][j] = memMat[i][j][0]
-					continue
-
-		# If the puzzle didnt change in this iteration break loop and verify puzzle
-		# Otherwise update the iteration count and continue
+		# If the puzzle didnt change in this iteration
 		if (prevPuz == puz).all():
-			prevPuz = None
-			break
-		else:
-			iterCount += 1
-			continue
+
+			fchange = False
+			# Search the memory matrix for cells with only one possibility
+			for i in np.arange(grid_dim):
+				for j in np.arange(grid_dim):
+					if len(memMat[i][j]) == 1:
+						n = memMat[i][j][0]
+						rhasn, _ = row_contains_num(puz, i, n)
+						chasn, _ = col_contains_num(puz, j, n)
+						bhasn = block_contains_num(puz, i//grid_dim, j//grid_dim, n)
+						# If this possibility is still valid change the puzzle
+						if not (rhasn or chasn or bhasn):
+							puz[i][j] = n
+							fchange = True
+
+			# If the puzzle did not change break the solve loop
+			if not fchange:
+				prevPuz = None
+				break
+
+		# The puzzle is still being solved
+		iterCount += 1
+		continue
 
 	print('\nFinal Puzzle')
 	display_puzzle(puz)
