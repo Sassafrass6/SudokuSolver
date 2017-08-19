@@ -129,6 +129,7 @@ def line_method ( puz, horiz, n ):
 # Search the memory matrix for cells with only one possibility.
 # mm is a memory matrix containing possibilities for each cell.
 def memory_method ( puz, mm ):
+	fchange = False
 	# For each cell
 	for i in np.arange(grid_dim):
 		for j in np.arange(grid_dim):
@@ -142,4 +143,6 @@ def memory_method ( puz, mm ):
 
 				# Make the change if this possibility is still valid
 				if not (rhasn or chasn or bhasn):
+					fchange = True
 					place_n(puz, i, j, n)
+	return fchange

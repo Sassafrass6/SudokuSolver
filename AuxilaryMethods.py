@@ -120,8 +120,6 @@ def verify_puzzle ( puz ):
 
 				# The puzzle is inconsistent if a block contains more than one of a single value
 				if (cblocks >= 2).any():
-					print cblocks
-
 					inconsistent = True
 					solved = False
 					break

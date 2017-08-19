@@ -20,7 +20,9 @@ from SolveSudoku import *
 # Solves currently solvable Sudoku puzzles
 if __name__ == '__main__':
 	# Solves pre-defined puzzles from 'Puzzles.py'
-	solve_puzzle_suite()
+	if solve_puzzle_suite():
+		print('All Puzzles Solved!!')
+		print('--------------------\n\n')
 
 	# Records numbers from input
 #	solve_puzzle(read_puzzle())
