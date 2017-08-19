@@ -92,7 +92,6 @@ def verify_puzzle ( puz ):
 
 		# The puzzle is inconsistent any r/c has more than one of a single value
 		if (ccols >= 2).any() or (crows >= 2).any():
-			print ccols, crows
 			inconsistent = True
 			solved = False
 			break
