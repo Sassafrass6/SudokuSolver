@@ -16,6 +16,8 @@ def solve_puzzle_suite ( ):
 #	solved.append(solve_puzzle(puzzle_hard_3))
 #	solved.append(solve_puzzle(puzzle_hard_4))
 #	solved.append(solve_puzzle(puzzle_hard_5))
+#	solved.append(solve_puzzle(puzzle_hard_6))
+#	solved.append(solve_puzzle(puzzle_hard_7))
 	
 	for s in solved:
 		if not s:
@@ -28,12 +30,20 @@ def guess_solution ( puz, mm ):
 	for i in np.arange(grid_dim):
 		for j in np.arange(grid_dim):
 			c = len(mm[i][j])
-			if c <= cmin:
-				cmax = c
+			if c != 0 and c <= cmin:
+				cmin = c
 				cpos = [i, j]
+	if verbose:
+		print cmin, cpos
+	if cmin < 9:
+		rnd = int(np.round((cmin-1)*np.random.random_sample()))
+		puz[cpos[0]][cpos[1]] = mm[cpos[0]][cpos[1]][rnd]
+		if solve_puzzle(puz):
+			return True
+		if verbose:
+			print 'guessing:', puz[cpos[0]][cpos[1]]
 
-	if cmin == 2:
-		print 'guessing:', mm[cpos[0]][cpos[1]][int(np.round(np.random.random_sample()))]
+	display_puzzle(puz)
 
 # Attempts to solve Sudoku puzzle
 def solve_puzzle ( puz ):
@@ -79,19 +89,17 @@ def solve_puzzle ( puz ):
 				if verbose:
 					print('Inner block Method')
 				inner_block_method(puz, n, memMat)
-
-		# Use the memory matrix to find cells which can be occupied by only one number
-		# Currently not functional
-#		memory_method(puz, memMat)
-		
-		# Try recursive solution here
 		
 		# If the puzzle didnt change in this iteration
 		if (prevPuz == puz).all():		
 			if verbose:
 				print('Memory Method')
+			# Use the memory matrix to find cells which can be occupied by only one number
 			if memory_method(puz, memMat):
 				continue
+			# Guess solution (Currently unsupported)
+#			print('Guessing')
+#			guess_solution(puz, memMat)
 			prevPuz = None
 			break
 
