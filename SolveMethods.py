@@ -125,3 +125,21 @@ def line_method ( puz, horiz, n ):
 		if pcnt == 1:
 			place_n(puz, ppos[0], ppos[1], n)
 			return
+			
+# Search the memory matrix for cells with only one possibility.
+# mm is a memory matrix containing possibilities for each cell.
+def memory_method ( puz, mm ):
+	# For each cell
+	for i in np.arange(grid_dim):
+		for j in np.arange(grid_dim):
+
+			# If the cell has only one possibility for a solution
+			if len(mm[i][j]) == 1:
+				n = mm[i][j][0]
+				rhasn, _ = row_contains_num(puz, i, n)
+				chasn, _ = col_contains_num(puz, j, n)
+				bhasn = block_contains_num(puz, i//grid_dim, j//grid_dim, n)
+
+				# Make the change if this possibility is still valid
+				if not (rhasn or chasn or bhasn):
+					puz[i][j] = n

@@ -1,6 +1,7 @@
 import numpy as np
 from Puzzles import *
-from SolveSudoku import solve
+from ReadSudoku import *
+from SolveSudoku import *
 
 ###################################################
 #
@@ -18,11 +19,8 @@ from SolveSudoku import solve
 
 # Solves currently solvable Sudoku puzzles
 if __name__ == '__main__':
-	solve(puzzle_easy_1)
-	solve(puzzle_moderate_1)
-	solve(puzzle_moderate_2)
-	solve(puzzle_moderate_3)
-	solve(puzzle_moderate_4)
-	solve(puzzle_hard_1)
-#	solve(puzzle_hard_2)
-#	solve(puzzle_hard_3)
+	# Solves pre-defined puzzles from 'Puzzles.py'
+	solve_puzzle_suite()
+
+	# Records numbers from input
+	solve_puzzle(read_puzzle())

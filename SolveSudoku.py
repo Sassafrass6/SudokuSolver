@@ -3,8 +3,20 @@ from Puzzles import *
 from SolveMethods import *
 from AuxilaryMethods import *
 
+def solve_puzzle_suite ( ):
+	solve_puzzle(puzzle_easy_1)
+	solve_puzzle(puzzle_moderate_1)
+	solve_puzzle(puzzle_moderate_2)
+	solve_puzzle(puzzle_moderate_3)
+	solve_puzzle(puzzle_moderate_4)
+	solve_puzzle(puzzle_moderate_5)
+	solve_puzzle(puzzle_hard_1)
+#	solve_puzzle(puzzle_hard_2)
+#	solve_puzzle(puzzle_hard_3)
+#	solve_puzzle(puzzle_hard_4)
+
 # Attempts to solve Sudoku puzzle
-def solve ( puz ):
+def solve_puzzle ( puz ):
 	
 	# Current Iteration
 	iterCount = 1
@@ -50,27 +62,13 @@ def solve ( puz ):
 				line_method(puz, True, n)
 				line_method(puz, False, n)
 
+		# Use the memory matrix to find cells which can be occupied by only one number
+		memory_method(puz, memMat)
+
 		# If the puzzle didnt change in this iteration
 		if (prevPuz == puz).all():
-
-			fchange = False
-			# Search the memory matrix for cells with only one possibility
-			for i in np.arange(grid_dim):
-				for j in np.arange(grid_dim):
-					if len(memMat[i][j]) == 1:
-						n = memMat[i][j][0]
-						rhasn, _ = row_contains_num(puz, i, n)
-						chasn, _ = col_contains_num(puz, j, n)
-						bhasn = block_contains_num(puz, i//grid_dim, j//grid_dim, n)
-						# If this possibility is still valid change the puzzle
-						if not (rhasn or chasn or bhasn):
-							puz[i][j] = n
-							fchange = True
-
-			# If the puzzle did not change break the solve loop
-			if not fchange:
-				prevPuz = None
-				break
+			prevPuz = None
+			break
 
 		# The puzzle is still being solved
 		iterCount += 1
