@@ -64,20 +64,74 @@ def find_completed_numbers ( puz, nComplete ):
 #   "Each number occurs once per column, row, and block
 # Returns True if the puzzle is consistent
 def verify_puzzle ( puz ):
-
-	# For each number in Sudoku
-	for n in np.arange(1,grid_dim+1,1):
-		# Check Columns and Rows
-		for i in np.arange(grid_dim):
-			rhasn, _ = row_contains_num(puz, i, n)
-			chasn, _ = col_contains_num(puz, i, n)
-			if not (rhasn and chasn):
-				return False
-
-		# Check each block in Sudoku
-		for i in np.arange(0, grid_dim, block_dim):
-			for j in np.arange(0, grid_dim, block_dim):
-				if not block_contains_num(puz, i, j, n):
-					return False
 	
-	return True
+	solved = True
+	inconsistent = False
+	# For each row or column
+	for i in np.arange(grid_dim):
+		ccols = np.zeros((grid_dim), dtype=int)
+		crows = np.zeros((grid_dim), dtype=int)
+
+		# For each cell in that row/column
+		for j in np.arange(grid_dim):
+
+			# If the cell value is 0 keep checking for inconsistencies
+			# Otherwise, increment the count of the r/c value
+
+			# Row
+			if puz[i][j] == 0:
+				solved = False
+			else:
+				ccols[puz[i][j]-1] += 1
+
+			# Column
+			if puz[j][i] == 0:
+				solved = False
+			else:
+				crows[puz[j][i]-1] += 1
+
+		# The puzzle is inconsistent any r/c has more than one of a single value
+		if (ccols >= 2).any() or (crows >= 2).any():
+			print ccols, crows
+			inconsistent = True
+			solved = False
+			break
+		# The puzzle is not solved if every value is not contained in each r/c
+		elif not ((ccols == 1).all() and (crows == 1).all()):
+			solved = False
+
+	# If no inconsistencies have been found
+	if not inconsistent:
+		# Count the multiplicity of each number in each cell of each block
+		for i in np.arange(0,grid_dim,block_dim):
+			for j in np.arange(0,grid_dim,block_dim):
+				cblocks = np.zeros((grid_dim), dtype=int)
+				for ik in np.arange(block_dim):
+					for jk in np.arange(block_dim):
+						x = i + ik
+						y = j + jk
+
+						# If the cell value is 0 keep checking for inconsistencies
+						if puz[x][y] == 0:
+							solved = False
+							continue
+						# Otherwise increment the count of the block value
+						else:
+							cblocks[puz[x][y]-1] += 1
+
+				# The puzzle is inconsistent if a block contains more than one of a single value
+				if (cblocks >= 2).any():
+					print cblocks
+
+					inconsistent = True
+					solved = False
+					break
+				# The puzzle is not solved if every value is not contained in each block
+				elif not (cblocks == 1).all():
+					solved = False
+
+	# Alert the user if the puzzle is inconsistent
+	if inconsistent:
+		print('Inconsistent Puzzle')
+
+	return solved

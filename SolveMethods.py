@@ -26,7 +26,7 @@ def block_contains_num ( puz, row, col, n ):
 	for i in np.arange(block_dim):
 		for j in np.arange(block_dim):
 			if puz[row+i][col+j] == n:
-				return True, (row+i, col+i)
+				return True
 	return False
 
 # Searches for definite numbers by checking cells within a block
@@ -138,8 +138,8 @@ def memory_method ( puz, mm ):
 				n = mm[i][j][0]
 				rhasn, _ = row_contains_num(puz, i, n)
 				chasn, _ = col_contains_num(puz, j, n)
-				bhasn = block_contains_num(puz, i//grid_dim, j//grid_dim, n)
+				bhasn = block_contains_num(puz, i//block_dim, j//block_dim, n)
 
 				# Make the change if this possibility is still valid
 				if not (rhasn or chasn or bhasn):
-					puz[i][j] = n
+					place_n(puz, i, j, n)

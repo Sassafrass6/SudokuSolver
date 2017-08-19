@@ -64,6 +64,8 @@ def solve_puzzle ( puz ):
 
 		# Use the memory matrix to find cells which can be occupied by only one number
 		memory_method(puz, memMat)
+		
+#		numSol = guess_method(puz)
 
 		# If the puzzle didnt change in this iteration
 		if (prevPuz == puz).all():
@@ -82,7 +84,8 @@ def solve_puzzle ( puz ):
 
 	# Verify that the Sudoku is correct
 	if not verify_puzzle(puz):
-		print 'Puzzle Inconsistent\n\n'
+		print 'Puzzle Not Solved'
+		print '-----------------\n\n'
 	if numsComplete.all():
 		print 'Puzzle Solved!'
 		print '--------------\n\n'

@@ -23,4 +23,4 @@ if __name__ == '__main__':
 	solve_puzzle_suite()
 
 	# Records numbers from input
-	solve_puzzle(read_puzzle())
+#	solve_puzzle(read_puzzle())
