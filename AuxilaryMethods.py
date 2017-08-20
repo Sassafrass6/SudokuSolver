@@ -49,17 +49,14 @@ def find_completed_numbers ( puz, nComplete ):
 
 	# Count numbers
 	for i in np.arange(grid_dim):
-		for j in np.arange(grid_dim):
-			if puz[i][j] != 0:
-				numCnt[puz[i][j]-1] += 1
-			else:
-				emptyCnt += 1
+		tCnt = np.bincount(puz[i,:], minlength=10)
+		emptyCnt += tCnt[0]
+		numCnt[:] += tCnt[1:10]
 
 	# Find completed numbers
-	for i in np.arange(grid_dim):
-		if numCnt[i] == grid_dim:
-			nComplete[i] = True
+	nComplete[:] = (numCnt[:] == grid_dim)
 
+#	return np.sum(numCnt[0])
 	return emptyCnt
 
 

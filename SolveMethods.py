@@ -32,6 +32,7 @@ def block_contains_num ( puz, row, col, n ):
 # Searches for definite numbers by checking cells within a block
 #  mm is a matrix which remembers the possible values a cell can contain
 def inner_block_method ( puz, n, mm ):
+	
 	# For each block
 	for i in np.arange(0, grid_dim, block_dim):
 		for j in np.arange(0, grid_dim, block_dim):
@@ -56,7 +57,7 @@ def inner_block_method ( puz, n, mm ):
 								# Store n in memory matrix
 								mm[x][y].append(n)
 								pcnt += 1
-								ppos = np.array([x, y])
+								ppos = [x, y]
 
 				# If there is only one free space in this block place n in that spot.
 				if pcnt == 1:

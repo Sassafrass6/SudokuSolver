@@ -88,7 +88,8 @@ def solve_puzzle ( puz, iterCount ):
 			print('\nITERATION # %d'%iterCount)
 
 		# For number 1 - grid_dim
-		for n in np.arange(1,grid_dim+1,1):
+		for n in np.arange(1,grid_dim+1, 1):
+
 			# Only emplace numbers incomplete in the puzzle
 			if not numsComplete[n-1]:
 				if verbose:
