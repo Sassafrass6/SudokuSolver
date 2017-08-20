@@ -24,6 +24,7 @@ def solve_puzzle_suite ( ):
 	solved.append(start_solve(puzzle_hard_6))
 	solved.append(start_solve(puzzle_very_hard_1))
 	solved.append(start_solve(puzzle_very_hard_2))
+	solved.append(start_solve(puzzle_very_hard_3))
 
 	if stopwatch:
 		print('Total Time:  %.3f seconds\n'%(time.time() - ttime))
