@@ -1,6 +1,7 @@
 import numpy as np
 from Puzzles import *
 
+
 # Replace location (x, y) in the puzzle with n
 def place_n ( puz, x, y, n ):
 	puz[x][y] = n
@@ -29,6 +30,7 @@ def block_contains_num ( puz, row, col, n ):
 				return True
 	return False
 
+
 # Searches for definite numbers by checking cells within a block
 #  mm is a matrix which remembers the possible values a cell can contain
 def inner_block_method ( puz, n, mm ):
@@ -38,7 +40,7 @@ def inner_block_method ( puz, n, mm ):
 
 			# If the block does not contain n
 			if not block_contains_num(puz, i, j, n):
-				
+
 				pcnt = 0
 				ppos = None
 				# Count the number of spots that n could possibly take
@@ -61,6 +63,7 @@ def inner_block_method ( puz, n, mm ):
 				# If there is only one free space in this block place n in that spot.
 				if pcnt == 1:
 					place_n(puz, ppos[0], ppos[1], n)
+
 
 # Searches for definite numbers in all rows or all columns
 #  horiz == True   => Search Rows
@@ -125,7 +128,8 @@ def line_method ( puz, horiz, n ):
 		if pcnt == 1:
 			place_n(puz, ppos[0], ppos[1], n)
 			return
-			
+
+
 # Search the memory matrix for cells with only one possibility.
 # mm is a memory matrix containing possibilities for each cell.
 def memory_method ( puz, mm ):
@@ -145,4 +149,5 @@ def memory_method ( puz, mm ):
 				if not (rhasn or chasn or bhasn):
 					fchange = True
 					place_n(puz, i, j, n)
+
 	return fchange

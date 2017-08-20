@@ -1,10 +1,11 @@
 import numpy as np
 from Puzzles import *
 
+
 # Read 'grid_dim' lines of 'grid_dim' integers.
 # 'grid_dim' is currently defined as 9 in 'Puzzles.py'
 def read_puzzle ( ):
-	
+
 	puz = np.zeros((grid_dim, grid_dim), dtype=int)
 	print('Enter %d lines with %d numbers each.\n* Use enter as line return\n* Use 0s as empty spaces\n* Include digits only\n'%(grid_dim, grid_dim))
 
@@ -25,6 +26,6 @@ def read_puzzle ( ):
 		output += ']'
 		if i != (grid_dim-1):
 			output += ','
-	print('\n' + output + '])')
+	print('\n' + output + '])\n\n')
 	
 	return puz

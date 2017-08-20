@@ -2,6 +2,7 @@ import numpy as np
 from Puzzles import *
 from SolveMethods import *
 
+
 # Print Sudoku in a readable format
 def display_puzzle ( puz ):
 	output = '\n'
@@ -10,19 +11,19 @@ def display_puzzle ( puz ):
 		if i == 3 or i == 7:
 			output += ('-'*(2*grid_dim+3)) + '\n'
 			continue
-		
+
 		# Correct indices for pretty spacings
 		if i > 7:
 			i -= 2
 		elif i > 3:
 			i -= 1
-			
+
 		for j in np.arange(grid_dim+2):
 			# Pretty spacings
 			if j == 3 or j == 7:
 				output += '| '
 				continue
-				
+
 			# Correct indices for pretty spacings
 			if j > 7:
 				j -= 2
@@ -38,6 +39,7 @@ def display_puzzle ( puz ):
 		# Add carrige return
 		output = output[:-1]+'\n'
 	print(output)
+
 
 # Updates boolean values in nComplete to reflect the state of the Sudoku puzzle
 # Returns the number of unsolved cells
@@ -60,11 +62,12 @@ def find_completed_numbers ( puz, nComplete ):
 
 	return emptyCnt
 
+
 # Verifies that the puzzle has the correct format:
 #   "Each number occurs once per column, row, and block
 # Returns True if the puzzle is consistent
 def verify_puzzle ( puz ):
-	
+
 	solved = True
 	inconsistent = False
 	# For each row or column

@@ -1,63 +1,75 @@
 import numpy as np
+import time
 from Puzzles import *
 from SolveMethods import *
 from AuxilaryMethods import *
 
+
+# Solve all puzzles
 def solve_puzzle_suite ( ):
+
 	solved = []
-	solved.append(solve_puzzle(puzzle_easy_1))
-	solved.append(solve_puzzle(puzzle_moderate_1))
-	solved.append(solve_puzzle(puzzle_moderate_2))
-	solved.append(solve_puzzle(puzzle_moderate_3))
-	solved.append(solve_puzzle(puzzle_moderate_4))
-	solved.append(solve_puzzle(puzzle_moderate_5))
-	solved.append(solve_puzzle(puzzle_hard_1))
-#	solved.append(solve_puzzle(puzzle_hard_2))
-#	solved.append(solve_puzzle(puzzle_hard_3))
-#	solved.append(solve_puzzle(puzzle_hard_4))
-#	solved.append(solve_puzzle(puzzle_hard_5))
-#	solved.append(solve_puzzle(puzzle_hard_6))
-#	solved.append(solve_puzzle(puzzle_hard_7))
+	ttime = time.time()
+	solved.append(start_solve(puzzle_easy_1))
+	solved.append(start_solve(puzzle_moderate_1))
+	solved.append(start_solve(puzzle_moderate_2))
+	solved.append(start_solve(puzzle_moderate_3))
+	solved.append(start_solve(puzzle_moderate_4))
+	solved.append(start_solve(puzzle_moderate_5))
+	solved.append(start_solve(puzzle_hard_1))
+	solved.append(start_solve(puzzle_hard_2))
+#	solved.append(start_solve(puzzle_hard_3))
+	solved.append(start_solve(puzzle_hard_4))
+	solved.append(start_solve(puzzle_hard_5))
+	solved.append(start_solve(puzzle_hard_6))
+	solved.append(start_solve(puzzle_very_hard_1))
+	solved.append(start_solve(puzzle_very_hard_2))
+
+	if stopwatch:
+		print('Total Time:  %.3f seconds\n'%(time.time() - ttime))
 	
-	for s in solved:
-		if not s:
+	for i in np.arange(len(solved)):
+		if not solved[i]:
+			print('Puzzle #%d failed'%(i+1))
 			return False
 	return True
 
-def guess_solution ( puz, mm ):
-	cmin = 10
-	cpos = None
-	for i in np.arange(grid_dim):
-		for j in np.arange(grid_dim):
-			c = len(mm[i][j])
-			if c != 0 and c <= cmin:
-				cmin = c
-				cpos = [i, j]
-	if verbose:
-		print cmin, cpos
-	if cmin < 9:
-		rnd = int(np.round((cmin-1)*np.random.random_sample()))
-		puz[cpos[0]][cpos[1]] = mm[cpos[0]][cpos[1]][rnd]
-		if solve_puzzle(puz):
-			return True
-		if verbose:
-			print 'guessing:', puz[cpos[0]][cpos[1]]
 
+# Starts the solving process
+# Returns True if the puzzle was solved and False otherwise
+def start_solve ( puz ):
+
+	print('Original Puzzle')
 	display_puzzle(puz)
 
+	verify_puzzle(puz)
+
+	solved = solve_puzzle(puz, 1)
+
+	print('\nFinal Puzzle')
+	display_puzzle(puz)
+
+	# Verify that the Sudoku is correct
+	if not verify_puzzle(puz):
+		print 'Puzzle Not Solved'
+		print '-----------------\n'
+		return False
+	else:
+		print 'Puzzle Solved!'
+		print '--------------\n'
+		return True
+
+
 # Attempts to solve Sudoku puzzle
-def solve_puzzle ( puz ):
-	
-	# Current Iteration
-	iterCount = 1
+# iter - The current iteration of the solve loop
+# Returns True if the puzzle was solved and False otherwise
+def solve_puzzle ( puz, iterCount ):
 
 	# Numbers (0-8 representing 1-9) completed in the Sudoku
 	numsComplete = np.zeros((grid_dim), dtype=bool)
 
-	print('Original Puzzle')
-	display_puzzle(puz)
-	
-	verify_puzzle(puz)
+	# Update numsCompleted
+	find_completed_numbers(puz, numsComplete)
 
 	# Copy board to determine if the state has changed
 	prevPuz = np.zeros_like(puz)
@@ -67,7 +79,7 @@ def solve_puzzle ( puz ):
 
 		# Save current state
 		prevPuz = np.copy(puz)
-		
+
 		# Matrix to remember which numbers can occupy which spaces
 		memMat = [[[] for _ in np.arange(grid_dim)] for _ in np.arange(grid_dim)]
 
@@ -89,7 +101,7 @@ def solve_puzzle ( puz ):
 				if verbose:
 					print('Inner block Method')
 				inner_block_method(puz, n, memMat)
-		
+
 		# If the puzzle didnt change in this iteration
 		if (prevPuz == puz).all():		
 			if verbose:
@@ -98,8 +110,9 @@ def solve_puzzle ( puz ):
 			if memory_method(puz, memMat):
 				continue
 			# Guess solution (Currently unsupported)
-#			print('Guessing')
-#			guess_solution(puz, memMat)
+			if verbose:
+				print('Guessing Method')
+			guess_solution(puz, memMat, iterCount)
 			prevPuz = None
 			break
 
@@ -107,18 +120,44 @@ def solve_puzzle ( puz ):
 		iterCount += 1
 		continue
 
-	print('\nFinal Puzzle')
-	display_puzzle(puz)
-
 	# Update numsCompleted
 	find_completed_numbers(puz, numsComplete)
 
 	# Verify that the Sudoku is correct
 	if not verify_puzzle(puz):
-		print 'Puzzle Not Solved'
-		print '-----------------\n\n'
 		return False
 	elif numsComplete.all():
-		print 'Puzzle Solved!'
-		print '--------------\n\n'
 		return True
+
+
+# Recursively guesses a number and checks for correctness
+# mm - Memory matrix
+# iterCount - Total iteration number
+# Returns True if the puzzle was solved and False otherwise
+def guess_solution ( puz, mm, iterCount ):
+
+	cmin = 10
+	cpos = None
+	# For each cell
+	for i in np.arange(grid_dim):
+		for j in np.arange(grid_dim):
+			c = len(mm[i][j])
+			# Save the cell with the fewest possibilities
+			if c != 0 and c <= cmin:
+				cmin = c
+				cpos = [i, j]
+
+	if cmin < 10:
+		# Keep a copy of the correct puzzle to revert to if the guess if bad
+		cpuz = np.copy(puz)
+		# For each possible number allowed in saved cell
+		for i in np.arange(cmin):
+			puz[:,:] = cpuz[:,:]
+			n = mm[cpos[0]][cpos[1]][i]
+			if verbose:
+				print('Guessing %d at position (%d, %d)'%(n, cpos[0], cpos[1]))
+
+			puz[cpos[0]][cpos[1]] = n
+
+			if solve_puzzle(puz, iterCount):
+				return True
