@@ -151,7 +151,7 @@ def guess_solution ( puz, mm, iterCount ):
 				cpos = [i, j]
 
 	if cmin < 10:
-		# Keep a copy of the correct puzzle to revert to if the guess if bad
+		# Keep a copy of the correct puzzle to revert to if the guess is bad
 		cpuz = np.copy(puz)
 		# For each possible number allowed in saved cell
 		for i in np.arange(cmin):
