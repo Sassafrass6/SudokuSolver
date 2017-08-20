@@ -10,25 +10,23 @@ def place_n ( puz, x, y, n ):
 
 # Returns True if row contains n
 def row_contains_num ( puz, row, n ):
-	for i in np.arange(grid_dim):
-		if puz[row][i] == n:
-			return True, i
-	return False, -1
+	w = np.where(puz[row,:] == n)
+	if len(w[0]) == 0:
+		return False, -1
+	else:
+		return True, w[0][0]
 
 # Returns True if col contains n
 def col_contains_num ( puz, col, n ):
-	for i in np.arange(grid_dim):
-		if puz[i][col] == n:
-			return True, i
-	return False, -1
+	w = np.where(puz[:,col] == n)
+	if len(w[0]) == 0:
+		return False, -1
+	else:
+		return True, w[0][0]
 
 # Returns True if the block_dim*block_dim grid starting at (row, col) contains n
 def block_contains_num ( puz, row, col, n ):
-	for i in np.arange(block_dim):
-		for j in np.arange(block_dim):
-			if puz[row+i][col+j] == n:
-				return True
-	return False
+	return (puz[row:row+block_dim,col:col+block_dim] == n).any()
 
 
 # Searches for definite numbers by checking cells within a block
