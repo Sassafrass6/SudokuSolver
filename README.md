@@ -8,5 +8,6 @@ A program to solve Sudoku puzzles, written in Python.
      'python main.py'
 
 * Puzzles must be added manually in 'Puzzles.py'
+* A tool for formatting Sudoku puzzles is included in the main menu options
+* The main menu provides instructions for solving Sudoku puzzles and is output upon execution.
 
-See 'main.py' for examples of solving Sudokus contained in 'Puzzles.py'
