@@ -18,13 +18,14 @@ def solve_puzzle_suite ( ):
 	solved.append(start_solve(puzzle_moderate_5))
 	solved.append(start_solve(puzzle_hard_1))
 	solved.append(start_solve(puzzle_hard_2))
-#	solved.append(start_solve(puzzle_hard_3))
+##	solved.append(start_solve(puzzle_hard_3))
 	solved.append(start_solve(puzzle_hard_4))
 	solved.append(start_solve(puzzle_hard_5))
 	solved.append(start_solve(puzzle_hard_6))
 	solved.append(start_solve(puzzle_very_hard_1))
 	solved.append(start_solve(puzzle_very_hard_2))
 	solved.append(start_solve(puzzle_very_hard_3))
+#	solved.append(start_solve(puzzle_worlds_hardest_telegraph))
 
 	if stopwatch:
 		print('Total Time:  %.3f seconds\n'%(time.time() - ttime))
