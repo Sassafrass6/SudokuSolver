@@ -14,6 +14,7 @@ from SolveSudoku import *
 # ASSUMPTIONS:
 #  * 2D Grid
 #  * (grid_dim % block_dim) == 0
+#  * sqrt(grid_dim).is_integer() == True
 ###################################################
 
 
